@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Flow - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Cash Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="overview">
+                    <span class="icon">📊</span> Overview
+                </a>
+                <a href="#" class="nav-item" data-section="income">
+                    <span class="icon">💰</span> Income
+                </a>
+                <a href="#" class="nav-item" data-section="expenses">
+                    <span class="icon">💸</span> Expenses
+                </a>
+                <a href="#" class="nav-item" data-section="transactions">
+                    <span class="icon">📋</span> Transactions
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 id="sectionTitle">Overview</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span id="userEmail">user@example.com</span>
+                        <div class="avatar">👤</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content">
+                <!-- Overview Section -->
+                <section id="overview" class="section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Balance</h3>
+                            <p class="stat-value" id="totalBalance">$0.00</p>
+                            <p class="stat-label">Your current balance</p>
+                        </div>
+                        <div class="stat-card income">
+                            <h3>Total Income</h3>
+                            <p class="stat-value" id="totalIncome">$0.00</p>
+                            <p class="stat-label">This month</p>
+                        </div>
+                        <div class="stat-card expense">
+                            <h3>Total Expenses</h3>
+                            <p class="stat-value" id="totalExpenses">$0.00</p>
+                            <p class="stat-label">This month</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Savings Rate</h3>
+                            <p class="stat-value" id="savingsRate">0%</p>
+                            <p class="stat-label">Monthly savings</p>
+                        </div>
+                    </div>
+
+                    <div class="charts-section">
+                        <div class="chart-card">
+                            <h3>Expense Breakdown</h3>
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Income vs Expenses</h3>
+                            <canvas id="incomeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="recent-transactions">
+                        <h3>Recent Transactions</h3>
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTransactionsList">
+                                <tr>
+                                    <td colspan="5" class="empty-message">No transactions yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Income Section -->
+                <section id="income" class="section">
+                    <div class="section-header">
+                        <h2>Income Tracker</h2>
+                        <button class="btn-primary" onclick="showAddIncomeForm()">+ Add Income</button>
+                    </div>
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Source</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="incomeList">
+                            <tr>
+                                <td colspan="4" class="empty-message">No income records</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Expenses Section -->
+                <section id="expenses" class="section">
+                    <div class="section-header">
+                        <h2>Expense Tracker</h2>
+                        <button class="btn-primary" onclick="showAddExpenseForm()">+ Add Expense</button>
+                    </div>
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseList">
+                            <tr>
+                                <td colspan="5" class="empty-message">No expense records</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Transactions Section -->
+                <section id="transactions" class="section">
+                    <div class="section-header">
+                        <h2>All Transactions</h2>
+                        <input type="text" id="searchInput" placeholder="Search transactions..." class="search-input">
+                    </div>
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allTransactionsList">
+                            <tr>
+                                <td colspan="6" class="empty-message">No transactions</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="section">
+                    <h2>Settings</h2>
+                    <div class="settings-card">
+                        <h3>Account Settings</h3>
+                        <div class="form-group">
+                            <label for="settingsEmail">Email</label>
+                            <input type="email" id="settingsEmail" placeholder="Your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingsCurrency">Currency</label>
+                            <select id="settingsCurrency">
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                                <option value="JPY">JPY (¥)</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for adding transactions -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Add Transaction</h2>
+            <form id="transactionForm">
+                <div class="form-group">
+                    <label for="transDate">Date</label>
+                    <input type="date" id="transDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="transType">Type</label>
+                    <select id="transType" onchange="updateCategories()">
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transCategory">Category</label>
+                    <select id="transCategory" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="transDescription">Description</label>
+                    <input type="text" id="transDescription" placeholder="Enter description" required>
+                </div>
+                <div class="form-group">
+                    <label for="transAmount">Amount</label>
+                    <input type="number" id="transAmount" placeholder="0.00" step="0.01" required>
+                </div>
+                <button type="submit" class="btn-primary">Add Transaction</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
